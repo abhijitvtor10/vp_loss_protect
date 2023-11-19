@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "Seclore Ext",
+  "version": "1.0",
+  "permissions": 
+  [
+    "activeTab",
+    "storage"
+  ],
+ "background": 
+ {
+  "scripts": ["background_js/background.js"],
+  "persistent": true
+},
+  "browser_action": {
+    "default_icon": {
+      "16": "images/download.png",
+      "48": "images/download.png",
+      "128": "images/download.png"
+    },
+    "default_title": "Seclore Stop_Trade",
+    "default_popup": "view/popup.html"
+  },
+  "content_scripts": 
+  [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/bundle.js"],
+      "type":"module"
+      
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+// fetch opening balance :
+window.location.href = 'https://kite-demo.zerodha.com/funds';
+const referenceDiv = document.querySelector('div.six.columns');
+if (referenceDiv) {
+  const headerText = referenceDiv.querySelector('h3.title span.name').textContent.trim().toLowerCase();
+  if (headerText.includes('equity')) {
+    const rows = referenceDiv.querySelectorAll('table.table tbody tr');
+    let openingBalanceValue;
+    rows.forEach(row => {
+      const firstTdText = row.querySelector('td:first-child').textContent.trim();
+      if (firstTdText === 'Opening balance') {
+        openingBalanceValue = row.querySelector('td:nth-child(2)').textContent.trim();
+  	
+      }
+    });
+	console.log('Opening Balance Value:', openingBalanceValue);
+
+  }
+}
+
+
+window.location.href = 'https://kite-demo.zerodha.com/positions';
+const tfootTd = document.querySelector('.open-positions tfoot td:nth-last-child(2)');
+const thresholdPercentage = (0.01/100)*100000;
+if (parseFloat(tfootTd.textContent) < (0-thresholdPercentage)) {
+  window.location.href = 'https://www.google.com';
+}
