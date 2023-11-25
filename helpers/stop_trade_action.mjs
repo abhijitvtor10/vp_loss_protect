@@ -39,9 +39,8 @@ export function readOpeningBalanceFromFundsPage()
 }
 
 // read Summary of position Iteratively a summary profit or loss value
-export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_loss_percentage, next_profit_milestone)
+export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_loss_percentage, fixed_profit_milestone,next_profit_milestone)
 {
-  	
   if(opening_Bal && stop_loss_percentage)	
   {	
     var tfootTd = document.querySelector(locator_constants.SUMMARY_POSITION);
@@ -69,12 +68,11 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_l
           amount_to_add=(currentPositionSummaryAmount -(current_Bal-opening_Bal))
         }
 		    current_Bal = current_Bal+amount_to_add
-
-		    next_profit_milestone=next_profit_milestone+next_profit_milestone
+		    next_profit_milestone=next_profit_milestone+fixed_profit_milestone
 	    }
 	    setTimeout(function() 
       {
-		    readSummaryOfPositionIteratively(opening_Bal,current_Bal, stop_loss_percentage, next_profit_milestone)
+		    readSummaryOfPositionIteratively(opening_Bal,current_Bal, stop_loss_percentage, fixed_profit_milestone,next_profit_milestone)
 		  }, 1000);
     }
   } 
@@ -137,12 +135,12 @@ export function compareLossAndCallKillSwitch()
       data_helper.loadData(local_data_constants.USER_TRAILING_STOP_LOSS_PERCENTAGE, function(trailing_stop_loss_percentage) 
       {
         console.log('User_Trailing_Stop_Loss_Percentage:', trailing_stop_loss_percentage);
-        var next_profit_milestone = (parseFloat(trailing_stop_loss_percentage)/100)*parseFloat(opening_Bal); 
+        var fixed_profit_milestone = (parseFloat(trailing_stop_loss_percentage)/100)*parseFloat(opening_Bal); 
         data_helper.loadData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, function(User_Provided_Stop_Loss_Percentage) 
         {
 		      var stop_loss_percentage = User_Provided_Stop_Loss_Percentage;
 		      console.log('User_Provided_Stop_Loss_Percentage:', stop_loss_percentage);
-          readSummaryOfPositionIteratively(opening_Bal, opening_Bal,stop_loss_percentage, next_profit_milestone);
+          readSummaryOfPositionIteratively(opening_Bal, opening_Bal,stop_loss_percentage, fixed_profit_milestone,fixed_profit_milestone);
         })
       })
     })
