@@ -9,12 +9,13 @@ document.getElementById(locators_constants.UPDATE_BUTTON).addEventListener("clic
 
 var openingBalance = null
 	 var stop_loss_percentage = null
+	 var trailing_stop_loss_percentage = null
 
 // Retrieve values from local storage
 data_helper.loadData(local_data.USER_STOCK_OPENING_BALANCE_KEY, function(User_Stock_Opening_Bal) {
 		openingBalance = User_Stock_Opening_Bal;
 		document.getElementById(locators_constants.OPENING_BALANCE_ID).value = parseFloat(openingBalance);
-		console.log('Seclore_User_Stock_Opening_Bal:', Seclore_User_Stock_Opening_Bal);
+		console.log('Seclore_User_Stock_Opening_Bal:', openingBalance);
 });
 
 data_helper.loadData(local_data.USER_STOP_LOSS_PERCENTAGE, function(User_Provided_Stop_Loss_Percentage) {
@@ -24,7 +25,7 @@ data_helper.loadData(local_data.USER_STOP_LOSS_PERCENTAGE, function(User_Provide
 });
 
 data_helper.loadData(local_data.USER_TRAILING_STOP_LOSS_PERCENTAGE, function(User_Provided_Trailing_Stop_Loss_Percentage) {
-  trailing_stop_loss_percentage = User_Provided_Trailing_Stop_Loss_Percentage;
+trailing_stop_loss_percentage = User_Provided_Trailing_Stop_Loss_Percentage;
   document.getElementById(locators_constants.TRAILING_STOP_LOSS_ID).value = parseFloat(trailing_stop_loss_percentage);
   console.log('User_Provided_Trailing_Stop_Loss_Percentage:', trailing_stop_loss_percentage);
 });

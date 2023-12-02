@@ -11,12 +11,15 @@ export const OPENING_BALANCE_VALUE             =   'td:nth-child(2)';
 export const SUMMARY_POSITION                  =   '.open-positions tfoot td:nth-last-child(2)';
 
 // Kill Switch toggle 
-export const KILL_SWITCH_TOGGLE                =   ".toggle-switch input";
-
+export const KILL_SWITCH_TOGGLE                =   ".su-switch-group #NSE_CFX";
+export const KILL_CONTINUE_BUTTON              =    ".btn.btn-blue";
+export const KILL_CONTINUE_BUTTON_SUBMIT       =    ".modal-container button.btn.btn-blue"
 // popup html locators
 export const OPENING_BALANCE_ID                =   'openingBalance';
 export const STOP_LOSS_ID                      =   'stop_loss_percentage'; 
 export const TRAILING_STOP_LOSS_ID             =   'trailing_stop_loss_percentage';
 export const UPDATE_BUTTON                     =    'updateValue';
+
+
 
 

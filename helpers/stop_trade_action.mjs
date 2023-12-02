@@ -52,6 +52,9 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_l
     // check current porsition summary amount is less than negated stop_loss_amount
     if (currentPositionSummaryAmount <= (0-stop_loss_amount)) 
     {
+      var currentDate = new Date();
+      var timestamp = currentDate.toISOString();
+      data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)	
 	    navigateToUrl(url_constants.TOGGLE_URL);
     }
     else
@@ -151,12 +154,52 @@ export function compareLossAndCallKillSwitch()
 //switch off the kill switch toggle if on
 export function switchOffKillSwitchToggleIfOn() 
 {
+  var isChange=false
   var toggles = document.querySelectorAll(locator_constants.KILL_SWITCH_TOGGLE);
   toggles.forEach(function(toggle) 
   {
+    
     if (toggle.checked) 
     {
+      isChange=true
       toggle.checked = false;
     }
     });
+    if(isChange)
+    {
+    setTimeout(function() 
+    {
+      
+      var buttonText = 'Continue';
+var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON);
+
+for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].textContent.trim() === buttonText) {
+        buttons[i].click();
+        break;
+    }
+}
+
+      console.log("kill switch clicked")
+    }, 2000);
+
+    
+    setTimeout(function() {
+      var buttonText = 'Continue';
+    
+var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON_SUBMIT);
+
+for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].textContent.trim() === buttonText) {
+        buttons[i].click();
+        console.log("kill switch clicked")
+        break;
+        
+    }
+}
+
+      console.log("kill switch clicked")
+  }, 2000);
+    
+    }
 }
