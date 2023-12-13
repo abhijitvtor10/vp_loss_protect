@@ -22,7 +22,7 @@ if (currentPageUrl.includes(url_constants.ZERODHA_FUNDS_URL))
 	}, 2000);
 }
 
-if(currentPageUrl.includes(url_constants.ZERODHA_POSITIONS_URL))
+if(currentPageUrl.includes(url_constants.ZERODHA_POSITIONS_URL) && !currentPageUrl.includes(url_constants.ZERODHA_POSITIONS_EXIT_URL))
 {
   kill_switch_helper.compareLossAndCallKillSwitch()
 }
@@ -48,9 +48,32 @@ if(currentPageUrl == url_constants.TOGGLE_URL)
             
     
 
-	}, 2000);
+	}, 3000);
 }
 
+if(currentPageUrl == url_constants.ZERODHA_POSITIONS_EXIT_URL)
+{
+	setTimeout(function() 
+	{
+    var currentDate = new Date();
+    data_helper.loadData(local_data_constants.LOSS_DATE, function(Loss_Date) {
+      var loss_date = Loss_Date;
+      if(loss_date!=null)
+      {
+        var storedDate = new Date(loss_date);
+      if (storedDate.toDateString() === currentDate.toDateString()) 
+      {
+        console.log("Today's input: " + storedDate);
+        kill_switch_helper.marketExit()   
+      } 
+      }
+      
+    });
+            
+    
+
+	}, 2000);
+}
 
 	
 

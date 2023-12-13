@@ -4,6 +4,50 @@ import * as url_constants from '../config/url_constants.mjs';
 import * as input_constants from '../config/input_constants.mjs';
 import * as data_helper from './chrome_db_helper.mjs';
 
+export function getElement(time_in_seconds, selector) {
+  var startTime = Date.now();
+  var endTime = startTime + time_in_seconds * 1000;
+  var element;
+
+  function checkElement() {
+    try 
+    {
+      element = document.querySelector(selector);
+    } catch (error) {
+      if (Date.now() < endTime) 
+      {
+      
+        setTimeout(checkElement, 1000); 
+      }
+    }
+  }
+
+  checkElement();
+  return element;
+}
+
+export function getElements(time_in_seconds, selector) {
+  var startTime = Date.now();
+  var endTime = startTime + time_in_seconds * 1000;
+  var element;
+
+  function checkElements() {
+    try 
+    {
+      element = document.querySelectorAll(selector);
+    } catch (error) {
+      if (Date.now() < endTime) 
+      {
+      
+        setTimeout(checkElements, 1000); 
+      }
+    }
+  }
+
+  checkElements();
+  return element;
+}
+
 // Function to read opening balance from funds page
 export function readOpeningBalanceFromFundsPage() 
 {
@@ -155,7 +199,7 @@ export function compareLossAndCallKillSwitch()
 export function switchOffKillSwitchToggleIfOn() 
 {
   var isChange=false
-  var toggles = document.querySelectorAll(locator_constants.KILL_SWITCH_TOGGLE);
+  var toggles = getElements(30,locator_constants.KILL_SWITCH_TOGGLE);
   toggles.forEach(function(toggle) 
   {
     
@@ -199,7 +243,41 @@ for (var i = 0; i < buttons.length; i++) {
 }
 
       console.log("kill switch clicked")
+      navigateToUrl(url_constants.ZERODHA_POSITIONS_EXIT_URL);
   }, 2000);
     
     }
+}
+
+export function marketExit()
+{
+
+  // Get all rows in the table body
+var rows = document.querySelectorAll(locator_constants.DATA_TABLE_SUMMARY);
+
+try{
+// Iterate through each row
+rows.forEach(function(row) {
+  // Get the P&L value for the current row
+  var pnlValue = parseFloat(row.querySelector(locator_constants.PROFIT_LOSS_VALUE).innerText);
+
+  // Check if P&L is less than 0
+  if (pnlValue < 0) {
+    // Select the checkbox
+    row.querySelector(locator_constants.MARKET_CHECK_BOX).click();
+  }
+});
+}
+catch{
+  console.log("ignored error while clicking on the check boxes")
+}
+setTimeout(function() {
+// Click the exit button
+document.querySelector(locator_constants.MARKET_EXIT_BUTTON).click();
+setTimeout(function() {
+  // Click the exit button confirmation
+  document.querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_MODEL).querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_BUTTON).click();
+  }, 2000);
+
+}, 2000);
 }
