@@ -17,7 +17,7 @@ export const MARKET_EXIT_CONFIRMATION_MODEL    =   '.modal-container';
 export const MARKET_EXIT_CONFIRMATION_BUTTON   =   '.button-blue';
 
 // Kill Switch toggle 
-export const KILL_SWITCH_TOGGLE                =   ".su-switch-group #NSE_EQ";
+export const KILL_SWITCH_TOGGLE                =   "input";
 export const KILL_CONTINUE_BUTTON              =    ".btn.btn-blue";
 export const KILL_CONTINUE_BUTTON_SUBMIT       =    ".modal-container button.btn.btn-blue"
 
