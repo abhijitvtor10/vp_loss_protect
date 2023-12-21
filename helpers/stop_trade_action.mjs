@@ -81,21 +81,43 @@ export function readOpeningBalanceFromFundsPage()
     }
   }
 }
-
+var is_stop_loss_updated= false
 // read Summary of position Iteratively a summary profit or loss value
 export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_loss_percentage, fixed_profit_milestone,next_profit_milestone)
 {
+
   if(opening_Bal && stop_loss_percentage)	
   {	
     var tfootTd = document.querySelector(locator_constants.SUMMARY_POSITION);
 
     var stop_loss_amount = (parseFloat(stop_loss_percentage)/100)*parseFloat(current_Bal);
-    
-    var currentPositionSummaryAmount = parseFloat(tfootTd.textContent)
-    
-    // check current porsition summary amount is less than negated stop_loss_amount
-    if (currentPositionSummaryAmount <= (0-stop_loss_amount)) 
+    if(is_stop_loss_updated)
     {
+      var currentDate = new Date();
+      var timestamp = currentDate.toISOString();
+      console.log("Current time : "+timestamp)
+      console.log("Current Stop loss amount : "+stop_loss_amount)
+      console.log("Current balance : "+current_Bal)
+   
+      is_stop_loss_updated=false
+  }
+    var currentPositionSummaryAmount = parseFloat(tfootTd.textContent)
+    //console.log("Opening balance : "+opening_Bal)
+    //console.log(" currentPositionSummaryAmount : "+currentPositionSummaryAmount)
+    //console.log("current_Bal : "+current_Bal)
+    //console.log(" stop_loss_amount : "+stop_loss_amount)
+    //console.log(" comparison "+((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)))
+    
+    //console.log("=======================================================")
+
+    // check current porsition summary amount is less than negated stop_loss_amount
+    if ((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)) 
+    {
+      console.log("stop loss hit you are saved enjoy!")
+      console.log("Opening balance : "+opening_Bal)
+    console.log(" currentPositionSummaryAmount : "+currentPositionSummaryAmount)
+    console.log("current_Bal : "+current_Bal)
+    console.log(" stop_loss_amount : "+stop_loss_amount)
       var currentDate = new Date();
       var timestamp = currentDate.toISOString();
       data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)	
@@ -115,6 +137,9 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_l
           amount_to_add=(currentPositionSummaryAmount -(current_Bal-opening_Bal))
         }
 		    current_Bal = current_Bal+amount_to_add
+        stop_loss_amount=stop_loss_amount+amount_to_add
+        is_stop_loss_updated=true
+        
 		    next_profit_milestone=next_profit_milestone+fixed_profit_milestone
 	    }
 	    setTimeout(function() 
