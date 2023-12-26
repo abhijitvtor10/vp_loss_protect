@@ -10,14 +10,12 @@ export function getElement(time_in_seconds, selector) {
   var element;
 
   function checkElement() {
-    try 
-    {
+    try {
       element = document.querySelector(selector);
     } catch (error) {
-      if (Date.now() < endTime) 
-      {
-      
-        setTimeout(checkElement, 1000); 
+      if (Date.now() < endTime) {
+
+        setTimeout(checkElement, 1000);
       }
     }
   }
@@ -32,14 +30,12 @@ export function getElements(time_in_seconds, selector) {
   var element;
 
   function checkElements() {
-    try 
-    {
+    try {
       element = document.querySelectorAll(selector);
     } catch (error) {
-      if (Date.now() < endTime) 
-      {
-      
-        setTimeout(checkElements, 1000); 
+      if (Date.now() < endTime) {
+
+        setTimeout(checkElements, 1000);
       }
     }
   }
@@ -49,260 +45,234 @@ export function getElements(time_in_seconds, selector) {
 }
 
 // Function to read opening balance from funds page
-export function readOpeningBalanceFromFundsPage() 
-{
+export function readOpeningBalanceFromFundsPage() {
   // taking reference of the div that contains opening balance
   const mainOpeningBalanceDiv = document.querySelector(locator_constants.MAIN_OPENING_BALANCE_DIV);
 
-  if (mainOpeningBalanceDiv) 
-  {
+  if (mainOpeningBalanceDiv) {
     // taking of the value of the header in reference div
     const headerText = mainOpeningBalanceDiv.querySelector(locator_constants.HEADER_TEXT_OPENING_BALANCE_DIV).textContent.trim().toLowerCase();
 
     // checking if the header text contains equity keyword
-    if (headerText.includes(locator_constants.HEADER_TEXT_TITLE_OPENING_BALANCE)) 
-    {
+    if (headerText.includes(locator_constants.HEADER_TEXT_TITLE_OPENING_BALANCE)) {
       const rows = mainOpeningBalanceDiv.querySelectorAll(locator_constants.OPENING_BALANCE_TABLE_ROW);
       let openingBalanceValue;
-      rows.forEach(row => 
-        {
-          const firstTdText = row.querySelector(locator_constants.OPENING_BALANCE_COLUMN_HEADER).textContent.trim();
-          if (firstTdText === locator_constants.OPENING_BALANCE) 
-          {
-            openingBalanceValue = row.querySelector(locator_constants.OPENING_BALANCE_VALUE).textContent.trim();
-          }
-        });
+      rows.forEach(row => {
+        const firstTdText = row.querySelector(locator_constants.OPENING_BALANCE_COLUMN_HEADER).textContent.trim();
+        if (firstTdText === locator_constants.OPENING_BALANCE) {
+          openingBalanceValue = row.querySelector(locator_constants.OPENING_BALANCE_VALUE).textContent.trim();
+        }
+      });
 
       // removing comma from the opening Balance Value 
-		  openingBalanceValue = openingBalanceValue.replace(/,/g, '');
-	    data_helper.saveData(local_data_constants.USER_STOCK_OPENING_BALANCE_KEY, parseFloat(openingBalanceValue))
-	    return openingBalanceValue;
+      openingBalanceValue = openingBalanceValue.replace(/,/g, '');
+      data_helper.saveData(local_data_constants.USER_STOCK_OPENING_BALANCE_KEY, parseFloat(openingBalanceValue))
+      return openingBalanceValue;
 
     }
   }
 }
-var is_stop_loss_updated= false
+var is_stop_loss_updated = false
 // read Summary of position Iteratively a summary profit or loss value
-export function readSummaryOfPositionIteratively(opening_Bal, current_Bal,stop_loss_percentage, fixed_profit_milestone,next_profit_milestone)
-{
+export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone) {
 
-  if(opening_Bal && stop_loss_percentage)	
-  {	
-    var tfootTd = document.querySelector(locator_constants.SUMMARY_POSITION);
+  if (opening_Bal && stop_loss_percentage) {
+    let tfootTd = document.querySelector(locator_constants.SUMMARY_POSITION);
 
-    var stop_loss_amount = (parseFloat(stop_loss_percentage)/100)*parseFloat(current_Bal);
-    if(is_stop_loss_updated)
+    let stop_loss_amount = (parseFloat(stop_loss_percentage) / 100) * parseFloat(current_Bal);
+    if (is_stop_loss_updated) 
     {
-      var currentDate = new Date();
-      var timestamp = currentDate.toISOString();
-      console.log("Current time : "+timestamp)
-      console.log("Current Stop loss amount : "+stop_loss_amount)
-      console.log("Current balance : "+current_Bal)
-   
-      is_stop_loss_updated=false
-  }
-    var currentPositionSummaryAmount = parseFloat(tfootTd.textContent)
-    //console.log("Opening balance : "+opening_Bal)
-    //console.log(" currentPositionSummaryAmount : "+currentPositionSummaryAmount)
-    //console.log("current_Bal : "+current_Bal)
-    //console.log(" stop_loss_amount : "+stop_loss_amount)
-    //console.log(" comparison "+((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)))
-    
-    //console.log("=======================================================")
+      let currentDate = new Date();
+      let timestamp = currentDate.toISOString();
+      console.log("Current time : " + timestamp)
+      console.log("Current Stop loss amount : " + stop_loss_amount)
+      console.log("Current balance : " + current_Bal)
+      is_stop_loss_updated = false
+    }
+    let currentPositionSummaryAmount = parseFloat(tfootTd.textContent)
 
-    // check current porsition summary amount is less than negated stop_loss_amount
-    if ((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)) 
-    {
-      console.log("stop loss hit you are saved enjoy!")
-      console.log("Opening balance : "+opening_Bal)
+    /* 
+    console.log("Opening balance : "+opening_Bal)
     console.log(" currentPositionSummaryAmount : "+currentPositionSummaryAmount)
     console.log("current_Bal : "+current_Bal)
     console.log(" stop_loss_amount : "+stop_loss_amount)
-      var currentDate = new Date();
-      var timestamp = currentDate.toISOString();
-      data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)	
-	    navigateToUrl(url_constants.TOGGLE_URL);
-    }
-    else
+    console.log(" comparison "+((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)))
+    console.log("=======================================================") 
+    */
+
+    // check current porsition summary amount is less than negated stop_loss_amount
+    if ((opening_Bal + currentPositionSummaryAmount) <= (current_Bal - stop_loss_amount)) 
     {
-	    if(currentPositionSummaryAmount>= next_profit_milestone)
-	    {
-        var amount_to_add=0
-        if(current_Bal==opening_Bal)
-        {
-          amount_to_add=currentPositionSummaryAmount
-        }
-        else
-        {
-          amount_to_add=(currentPositionSummaryAmount -(current_Bal-opening_Bal))
-        }
-		    current_Bal = current_Bal+amount_to_add
-        stop_loss_amount=stop_loss_amount+amount_to_add
-        is_stop_loss_updated=true
-        
-		    next_profit_milestone=next_profit_milestone+fixed_profit_milestone
-	    }
-	    setTimeout(function() 
-      {
-		    readSummaryOfPositionIteratively(opening_Bal,current_Bal, stop_loss_percentage, fixed_profit_milestone,next_profit_milestone)
-		  }, 1000);
+      console.log("stop loss hit you are saved enjoy!")
+      console.log("Opening balance : " + opening_Bal)
+      console.log(" currentPositionSummaryAmount : " + currentPositionSummaryAmount)
+      console.log("current_Bal : " + current_Bal)
+      console.log(" stop_loss_amount : " + stop_loss_amount)
+      let currentDate = new Date();
+      let timestamp = currentDate.toISOString();
+      data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)
+      navigateToUrl(url_constants.TOGGLE_URL);
     }
-  } 
+    else 
+    {
+      if (currentPositionSummaryAmount >= next_profit_milestone) {
+        let amount_to_add = 0
+        if (current_Bal == opening_Bal) {
+          amount_to_add = currentPositionSummaryAmount
+        }
+        else {
+          amount_to_add = (currentPositionSummaryAmount - (current_Bal - opening_Bal))
+        }
+        current_Bal = current_Bal + amount_to_add
+        stop_loss_amount = stop_loss_amount + amount_to_add
+        is_stop_loss_updated = true
+
+        next_profit_milestone = next_profit_milestone + fixed_profit_milestone
+      }
+      setTimeout(function () {
+        readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone)
+      }, 1000);
+    }
+  }
 }
 
 // navigate to the given url
-export function navigateToUrl(url) 
-{
+export function navigateToUrl(url) {
   chrome.runtime.sendMessage({ action: 'navigateToPage', url });
 }
 
 // fetch stop loss percentage from th user
-export function fetchStopLossPercentageValueForDay()
-{
-  var currentDate = new Date();
-  var timestamp = currentDate.toISOString();
-  var today = null
-	// Fetch stored data from local storage
-  var stop_loss_percentage = null
-  data_helper.loadData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, function(Seclore_User_Stock_Loss_Limit) 
-  {
-		stop_loss_percentage =Seclore_User_Stock_Loss_Limit;
+export function fetchStopLossPercentageValueForDay() {
+  let currentDate = new Date();
+  let timestamp = currentDate.toISOString();
+  let today = null
+  // Fetch stored data from local storage
+  let stop_loss_percentage = null
+  data_helper.loadData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, function (Seclore_User_Stock_Loss_Limit) {
+    stop_loss_percentage = Seclore_User_Stock_Loss_Limit;
 
-    data_helper.loadData(local_data_constants.USER_DATA_COLLECTION_DATE, function(Seclore_User_Today) 
-    {
-		  today = Seclore_User_Today;
-    if (stop_loss_percentage) 
-    {
-      var storedDate = new Date(today);
-      if (storedDate.toDateString() === currentDate.toDateString()) 
+    data_helper.loadData(local_data_constants.USER_DATA_COLLECTION_DATE, function (Seclore_User_Today) {
+      today = Seclore_User_Today;
+      if (stop_loss_percentage) 
       {
-        console.log("Today's input: " + stop_loss_percentage);
-      } 
-      else 
-      {
-        var newUserInput = prompt(input_constants.INPUT_STOP_LOSS_PERCENTAGE);
+        let storedDate = new Date(today);
+        if (storedDate.toDateString() === currentDate.toDateString()) 
+        {
+          console.log("Today's input: " + stop_loss_percentage);
+        }
+        else 
+        {
+          let newUserInput = prompt(input_constants.INPUT_STOP_LOSS_PERCENTAGE);
+          data_helper.saveData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, newUserInput)
+          data_helper.saveData(local_data_constants.USER_DATA_COLLECTION_DATE, timestamp)
+        }
+      }
+      else {
+        let newUserInput = prompt(input_constants.INPUT_STOP_LOSS_PERCENTAGE);
         data_helper.saveData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, newUserInput)
-	      data_helper.saveData(local_data_constants.USER_DATA_COLLECTION_DATE,timestamp)
-	     }
-    } 
-    else 
-    {
-        var newUserInput = prompt(input_constants.INPUT_STOP_LOSS_PERCENTAGE);
-        data_helper.saveData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, newUserInput)
-	    data_helper.saveData(local_data_constants.USER_DATA_COLLECTION_DATE,timestamp)
-    }
+        data_helper.saveData(local_data_constants.USER_DATA_COLLECTION_DATE, timestamp)
+      }
     });
   });
 }
 
 // compare loss with given stop loss percentage and call kill switch method
-export function compareLossAndCallKillSwitch()
-{
-	setTimeout(function() 
-	{	
-    data_helper.loadData(local_data_constants.USER_STOCK_OPENING_BALANCE_KEY, function(User_Stock_Opening_Bal) 
-    {
-		  var opening_Bal = User_Stock_Opening_Bal;
-		  console.log('User_Stock_Opening_Bal:', opening_Bal);
-      data_helper.loadData(local_data_constants.USER_TRAILING_STOP_LOSS_PERCENTAGE, function(trailing_stop_loss_percentage) 
-      {
+export function compareLossAndCallKillSwitch() {
+  setTimeout(function () {
+    data_helper.loadData(local_data_constants.USER_STOCK_OPENING_BALANCE_KEY, function (User_Stock_Opening_Bal) {
+      var opening_Bal = User_Stock_Opening_Bal;
+      console.log('User_Stock_Opening_Bal:', opening_Bal);
+      data_helper.loadData(local_data_constants.USER_TRAILING_STOP_LOSS_PERCENTAGE, function (trailing_stop_loss_percentage) {
         console.log('User_Trailing_Stop_Loss_Percentage:', trailing_stop_loss_percentage);
-        var fixed_profit_milestone = (parseFloat(trailing_stop_loss_percentage)/100)*parseFloat(opening_Bal); 
-        data_helper.loadData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, function(User_Provided_Stop_Loss_Percentage) 
-        {
-		      var stop_loss_percentage = User_Provided_Stop_Loss_Percentage;
-		      console.log('User_Provided_Stop_Loss_Percentage:', stop_loss_percentage);
-          readSummaryOfPositionIteratively(opening_Bal, opening_Bal,stop_loss_percentage, fixed_profit_milestone,fixed_profit_milestone);
+        var fixed_profit_milestone = (parseFloat(trailing_stop_loss_percentage) / 100) * parseFloat(opening_Bal);
+        data_helper.loadData(local_data_constants.USER_STOP_LOSS_PERCENTAGE, function (User_Provided_Stop_Loss_Percentage) {
+          var stop_loss_percentage = User_Provided_Stop_Loss_Percentage;
+          console.log('User_Provided_Stop_Loss_Percentage:', stop_loss_percentage);
+          readSummaryOfPositionIteratively(opening_Bal, opening_Bal, stop_loss_percentage, fixed_profit_milestone, fixed_profit_milestone);
         })
       })
     })
-  
+
   }, 2000);
 }
 
 //switch off the kill switch toggle if on
-export function switchOffKillSwitchToggleIfOn() 
-{
-  var isChange=false
-  var toggles = getElements(30,locator_constants.KILL_SWITCH_TOGGLE);
-  toggles.forEach(function(toggle) 
-  {
-    
-    if (toggle.checked) 
-    {
-      isChange=true
+export function switchOffKillSwitchToggleIfOn() {
+  var isChange = false
+  var toggles = getElements(30, locator_constants.KILL_SWITCH_TOGGLE);
+  toggles.forEach(function (toggle) {
+
+    if (toggle.checked) {
+      isChange = true
       toggle.checked = false;
     }
-    });
-    if(isChange)
-    {
-    setTimeout(function() 
-    {
-      
-      var buttonText = 'Continue';
-var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON);
+  });
+  if (isChange) {
+    setTimeout(function () {
 
-for (var i = 0; i < buttons.length; i++) {
-    if (buttons[i].textContent.trim() === buttonText) {
-        buttons[i].click();
-        break;
-    }
-}
+      var buttonText = 'Continue';
+      var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON);
+
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].textContent.trim() === buttonText) {
+          buttons[i].click();
+          break;
+        }
+      }
 
       console.log("kill switch clicked")
     }, 2000);
 
-    
-    setTimeout(function() {
-      var buttonText = 'Continue';
-    
-var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON_SUBMIT);
 
-for (var i = 0; i < buttons.length; i++) {
-    if (buttons[i].textContent.trim() === buttonText) {
-        buttons[i].click();
-        console.log("kill switch clicked")
-        break;
-        
-    }
-}
+    setTimeout(function () {
+      var buttonText = 'Continue';
+
+      var buttons = document.querySelectorAll(locator_constants.KILL_CONTINUE_BUTTON_SUBMIT);
+
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].textContent.trim() === buttonText) {
+          buttons[i].click();
+          console.log("kill switch clicked")
+          break;
+
+        }
+      }
 
       console.log("kill switch clicked")
       navigateToUrl(url_constants.ZERODHA_POSITIONS_EXIT_URL);
-  }, 2000);
-    
-    }
+    }, 2000);
+
+  }
 }
 
-export function marketExit()
-{
+export function marketExit() {
 
   // Get all rows in the table body
-var rows = document.querySelectorAll(locator_constants.DATA_TABLE_SUMMARY);
+  var rows = document.querySelectorAll(locator_constants.DATA_TABLE_SUMMARY);
 
-try{
-// Iterate through each row
-rows.forEach(function(row) {
-  // Get the P&L value for the current row
-  var pnlValue = parseFloat(row.querySelector(locator_constants.PROFIT_LOSS_VALUE).innerText);
+  try {
+    // Iterate through each row
+    rows.forEach(function (row) {
+      // Get the P&L value for the current row
+      var pnlValue = parseFloat(row.querySelector(locator_constants.PROFIT_LOSS_VALUE).innerText);
 
-  // Check if P&L is less than 0
-  if (pnlValue < 0) {
-    // Select the checkbox
-    row.querySelector(locator_constants.MARKET_CHECK_BOX).click();
+      // Check if P&L is less than 0
+      if (pnlValue < 0) {
+        // Select the checkbox
+        row.querySelector(locator_constants.MARKET_CHECK_BOX).click();
+      }
+    });
   }
-});
-}
-catch{
-  console.log("ignored error while clicking on the check boxes")
-}
-setTimeout(function() {
-// Click the exit button
-document.querySelector(locator_constants.MARKET_EXIT_BUTTON).click();
-setTimeout(function() {
-  // Click the exit button confirmation
-  document.querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_MODEL).querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_BUTTON).click();
-  }, 2000);
+  catch {
+    console.log("ignored error while clicking on the check boxes")
+  }
+  setTimeout(function () {
+    // Click the exit button
+    document.querySelector(locator_constants.MARKET_EXIT_BUTTON).click();
+    setTimeout(function () {
+      // Click the exit button confirmation
+      document.querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_MODEL).querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_BUTTON).click();
+    }, 2000);
 
-}, 2000);
+  }, 2000);
 }
