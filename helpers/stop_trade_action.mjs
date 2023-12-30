@@ -74,12 +74,14 @@ export function readOpeningBalanceFromFundsPage() {
 }
 var is_stop_loss_updated = false
 // read Summary of position Iteratively a summary profit or loss value
-export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone) {
-
+export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone) 
+{
+  try
+  {
   if (opening_Bal && stop_loss_percentage) {
     var tfootTd = document.querySelector(locator_constants.SUMMARY_POSITION);
     var tfootTd_text= tfootTd.textContent
-    console.log("Obtained text from  positions"+tfootTd_text)
+    console.log("Obtained text from  position "+tfootTd_text)
 
     tfootTd_text=tfootTd_text.replaceAll(",","")
     
@@ -94,6 +96,7 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
       console.log("Current balance : " + current_Bal)
       is_stop_loss_updated = false
     }
+
 
     var currentPositionSummaryAmount = parseFloat(tfootTd_text)
 
@@ -118,6 +121,7 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
       var timestamp = currentDate.toISOString();
       data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)
       navigateToUrl(url_constants.TOGGLE_URL);
+     
     }
     else 
     { 
@@ -140,6 +144,14 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
       }, 1000);
     }
   }
+}
+catch(e) 
+{
+  console.log("Got error while iterating on the positions re-iterating again",e)
+  setTimeout(function () {
+    readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone)
+  }, 2000);
+}
 }
 
 // navigate to the given url
