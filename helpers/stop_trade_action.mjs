@@ -105,6 +105,8 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
      
     console.log("Opening balance : "+opening_Bal)
     console.log(" currentPositionSummaryAmount : "+currentPositionSummaryAmount)
+    var minimum_closing_balance = (parseFloat((100 - stop_loss_percentage)) / 100) * parseFloat(current_Bal);
+    console.log("minimum profit : "  (minimum_closing_balance-opening_Bal))
     console.log("current_Bal : "+current_Bal)
     console.log(" stop_loss_amount : "+stop_loss_amount)
     console.log(" comparison "+((opening_Bal+currentPositionSummaryAmount) <= (current_Bal-stop_loss_amount)))
