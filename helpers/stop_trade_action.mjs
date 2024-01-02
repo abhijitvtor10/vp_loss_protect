@@ -257,7 +257,7 @@ export function switchOffKillSwitchToggleIfOn() {
       }
 
       console.log("kill switch clicked")
-      //navigateToUrl(url_constants.ZERODHA_POSITIONS_EXIT_URL);
+      navigateToUrl(url_constants.ZERODHA_POSITIONS_EXIT_URL);
     }, 5000);
 
   }
