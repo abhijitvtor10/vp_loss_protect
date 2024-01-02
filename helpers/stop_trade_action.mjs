@@ -89,10 +89,12 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
     var stop_loss_amount = (parseFloat(stop_loss_percentage) / 100) * parseFloat(current_Bal);
     if (is_stop_loss_updated) 
     {
+      var minimum_closing_balance = (parseFloat((100 - stop_loss_percentage)) / 100) * parseFloat(current_Bal);
       var currentDate = new Date();
       var timestamp = currentDate.toISOString();
       console.log("Current time : " + timestamp)
-      console.log("Current Stop loss amount : " + stop_loss_amount)
+      console.log("Current Stop loss amount : " + stop_loss_amount)  
+      console.log("minimum profit : "  (minimum_closing_balance-opening_Bal))
       console.log("Current balance : " + current_Bal)
       is_stop_loss_updated = false
     }
