@@ -5,9 +5,11 @@ import * as data_helper from './helpers/chrome_db_helper.mjs'
 // Perform actions based on the URL
 const currentPageUrl = window.location.href;
 
+// this is to check and perform tasks when user comes to the zerodha website
 if(currentPageUrl.includes(url_constants.ZERODHA_BASE_URL))
 {
-  kill_switch_helper.fetchStopLossPercentageValueForDay()
+  // have stopped asking from here as asking in the plugin
+  //kill_switch_helper.fetchStopLossPercentageValueForDay()
 }
 
 if (currentPageUrl.includes(url_constants.ZERODHA_FUNDS_URL)) 
@@ -31,6 +33,7 @@ if(currentPageUrl == url_constants.TOGGLE_URL)
 {
 	setTimeout(function() 
 	{
+   
     var currentDate = new Date();
     data_helper.loadData(local_data_constants.LOSS_DATE, function(Loss_Date) {
       var loss_date = Loss_Date;
@@ -56,6 +59,7 @@ if(currentPageUrl == url_constants.ZERODHA_POSITIONS_EXIT_URL)
 	setTimeout(function() 
 	{
     var currentDate = new Date();
+    
     data_helper.loadData(local_data_constants.LOSS_DATE, function(Loss_Date) {
       var loss_date = Loss_Date;
       if(loss_date!=null)

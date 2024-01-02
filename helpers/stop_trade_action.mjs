@@ -121,10 +121,12 @@ export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_
       console.log(" currentPositionSummaryAmount : " + currentPositionSummaryAmount)
       console.log("current_Bal : " + current_Bal)
       console.log(" stop_loss_amount : " + stop_loss_amount)
+      var minimum_closing_balance = (parseFloat((100 - stop_loss_percentage)) / 100) * parseFloat(current_Bal);
+      console.log("minimum profit : "  + (minimum_closing_balance-opening_Bal))
       var currentDate = new Date();
       var timestamp = currentDate.toISOString();
       data_helper.saveData(local_data_constants.LOSS_DATE, timestamp)
-      navigateToUrl(url_constants.TOGGLE_URL);
+      navigateToNewTab(url_constants.ZERODHA_POSITIONS_EXIT_URL);
      
     }
     else 
@@ -161,6 +163,10 @@ catch(e)
 // navigate to the given url
 export function navigateToUrl(url) {
   chrome.runtime.sendMessage({ action: 'navigateToPage', url });
+}
+export function navigateToNewTab(url)
+{
+  chrome.runtime.sendMessage({ action: 'navigateToNewPage', url });
 }
 
 // fetch stop loss percentage from th user
@@ -261,7 +267,6 @@ export function switchOffKillSwitchToggleIfOn() {
       }
 
       console.log("kill switch clicked")
-      navigateToUrl(url_constants.ZERODHA_POSITIONS_EXIT_URL);
     }, 5000);
 
   }
@@ -282,16 +287,27 @@ export function marketExit() {
       
     });
   }
-  catch {
-    console.log("ignored error while clicking on the check boxes")
+  catch(e) {
+    console.log("ignored error while clicking on the check boxes",e)
   }
+  try
+  { 
   setTimeout(function () {
     // Click the exit button
     document.querySelector(locator_constants.MARKET_EXIT_BUTTON).click();
     setTimeout(function () {
       // Click the exit button confirmation
       document.querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_MODEL).querySelector(locator_constants.MARKET_EXIT_CONFIRMATION_BUTTON).click();
+      setTimeout(function () {
+      navigateToUrl(url_constants.TOGGLE_URL);
+      }, 2000);
     }, 2000);
 
   }, 2000);
+}
+catch(e){
+  console.log("could not exit market",e)
+  navigateToUrl(url_constants.TOGGLE_URL);
+
+}
 }

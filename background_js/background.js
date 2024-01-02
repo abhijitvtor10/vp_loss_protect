@@ -8,6 +8,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.tabs.update(sender.tab.id, { url: message.url });
 
   } 
+  if (message.action === 'navigateToNewPage') {
+    nextUrl = message.url;
+    chrome.tabs.create({ url: message.url });
+  }
 });
 
 
