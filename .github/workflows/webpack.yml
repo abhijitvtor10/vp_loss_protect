@@ -30,7 +30,6 @@ jobs:
       run: |
         rm -rf dist
         npx webpack --config webpack.config.js
-        ls -al
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
