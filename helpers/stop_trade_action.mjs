@@ -44,7 +44,7 @@ export function getElements(time_in_seconds, selector) {
   return element;
 }
 
-// Function to read opening balance from funds page
+// Function to read opening balance from funds pages
 export function readOpeningBalanceFromFundsPage() {
   // taking reference of the div that contains opening balance
   const mainOpeningBalanceDiv = document.querySelector(locator_constants.MAIN_OPENING_BALANCE_DIV);
