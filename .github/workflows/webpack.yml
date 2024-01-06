@@ -12,8 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-
+        node-version: [18.x]
+    if: contains(github.event.head_commit.message, 'build_it')
     steps:
     - uses: actions/checkout@v3
 
@@ -26,6 +26,8 @@ jobs:
       run: |
         npm install
         npx webpack
+        git config --global user.email "abhijit.vtor@gmail.com"
+        git config --global user.name "abhijitvtor10"
         git add .
         git commit -m "building webpack"
         git push
