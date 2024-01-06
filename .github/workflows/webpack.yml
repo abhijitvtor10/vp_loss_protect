@@ -26,9 +26,10 @@ jobs:
       run: |
         npm install
         npx webpack
-        git config --global user.email "abhijit.vtor@gmail.com"
-        git config --global user.name "abhijitvtor10"
-        git remote set-url origin https://abhijitvtor10@github.com/user/vp_loss_protect.git
-        git add .
-        git commit -m "building webpack"
-        git push
+        
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v9
+      with:
+        author_name: abhijitvtor10
+        author_email: abhijit.vtor@gmail.com
+        message: 'Build Webpack'
