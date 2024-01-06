@@ -30,7 +30,7 @@ jobs:
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with:
-        add: '.'
+        add: 'dist'
         author_name: abhijitvtor10
         author_email: abhijit.vtor@gmail.com
         message: 'Build Webpack Now'
