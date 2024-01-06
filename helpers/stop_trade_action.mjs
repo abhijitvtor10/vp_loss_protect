@@ -50,7 +50,7 @@ export function readOpeningBalanceFromFundsPage() {
   const mainOpeningBalanceDiv = document.querySelector(locator_constants.MAIN_OPENING_BALANCE_DIV);
 
   if (mainOpeningBalanceDiv) {
-    // taking of the value of the header in reference div
+    // its value of the header in reference div
     const headerText = mainOpeningBalanceDiv.querySelector(locator_constants.HEADER_TEXT_OPENING_BALANCE_DIV).textContent.trim().toLowerCase();
 
     // checking if the header text contains equity keyword
