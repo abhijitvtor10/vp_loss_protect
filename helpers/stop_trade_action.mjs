@@ -73,7 +73,7 @@ export function readOpeningBalanceFromFundsPage() {
   }
 }
 var is_stop_loss_updated = false
-// read Summary of position Iteratively a summary profit or loss value
+// reads Summary of position Iteratively a summary profit or loss value
 export function readSummaryOfPositionIteratively(opening_Bal, current_Bal, stop_loss_percentage, fixed_profit_milestone, next_profit_milestone) 
 {
   try
