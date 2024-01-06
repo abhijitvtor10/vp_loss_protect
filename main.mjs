@@ -5,7 +5,7 @@ import * as data_helper from './helpers/chrome_db_helper.mjs'
 // Perform actions based on the URL
 const currentPageUrl = window.location.href;
 
-// this is to check and perform tasks when user comes to the zerodha website
+// this is to check and perform tasks when user comes to the zerodha websites
 if(currentPageUrl.includes(url_constants.ZERODHA_BASE_URL))
 {
   // have stopped asking from here as asking in the plugin
