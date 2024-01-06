@@ -26,7 +26,8 @@ jobs:
       run: |
         npm install
         npx webpack
-        ls
+        ls -l
+        ls -l dist
         
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
