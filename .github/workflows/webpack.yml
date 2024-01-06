@@ -27,8 +27,8 @@ jobs:
         npm install
         rm -rf dist
         npx webpack --config webpack.config.js
-        ls
-        ls dist
+        ls -al
+
     - name: Create file in dist
       run: echo "This is a sample file in dist" > dist/sample.txt
 
