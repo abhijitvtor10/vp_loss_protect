@@ -28,6 +28,7 @@ jobs:
         npx webpack
         git config --global user.email "abhijit.vtor@gmail.com"
         git config --global user.name "abhijitvtor10"
+        git remote set-url origin https://abhijitvtor10@github.com/user/vp_loss_protect.git
         git add .
         git commit -m "building webpack"
         git push
