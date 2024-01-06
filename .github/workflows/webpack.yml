@@ -25,12 +25,12 @@ jobs:
     - name: Build
       run: |
         npm install
-        rm -rf dist
         npx webpack --config webpack.config.js
         ls -al
 
     - name: Create file in dist
-      run: echo "This is a sample file in dist" > dist/sample.txt
+      run: |
+        rm -rf dist
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
