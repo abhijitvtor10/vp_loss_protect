@@ -22,14 +22,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: remove dist
+      run:  rm -rf dist
     - name: Build
-      run: |
-        npm install
+      run: npm install
 
-    - name: Create file in dist
-      run: |
-        rm -rf dist
-        npx webpack --config webpack.config.js
+    - name: build webpack dist
+      run: npx webpack --config webpack.config.js
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
