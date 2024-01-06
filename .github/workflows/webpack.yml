@@ -32,4 +32,4 @@ jobs:
       with:
         author_name: abhijitvtor10
         author_email: abhijit.vtor@gmail.com
-        message: 'Build Webpack'
+        message: 'Build Webpack Now'
