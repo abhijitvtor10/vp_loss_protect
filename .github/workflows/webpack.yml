@@ -28,6 +28,6 @@ jobs:
         npx webpack
         git config --global user.email "abhijit.vtor@gmail.com"
         git config --global user.name "abhijitvtor10"
-        git add dist
+        git add --all dist/
         git commit -m "building webpack"
         git push
