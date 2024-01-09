@@ -33,9 +33,6 @@ jobs:
         author_email: abhijit.vtor@gmail.com
         message: 'Build Webpack Now'
 
-    - name: Build
-      run: npm install
-
     - name: build webpack dist
       run: npx webpack --config webpack.config.js
 
